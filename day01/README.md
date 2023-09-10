@@ -16,7 +16,7 @@ In AWS, this can be done by creating an IAM user specifically for Terraform with
 
 
 ## Terminologies Related to Terraform
-1. **Providers:** Providers are Terraform plugins that allow it to communicate with various infrastructure and service providers. Terraform can handle the resources and data sources specific to each provider. For example - You can use aws provider of aws to allow terraform to manage aws resources.
+1. **Providers:** Providers are Terraform plugins that allow it to communicate with various infrastructure and service providers. Terraform can handle the resources and data sources specific to each provider. For example - You can use aws provider of aws to allow terraform to manage aws resources. 
 ```
 terraform {
   required_providers {
@@ -26,7 +26,7 @@ terraform {
     }
   }
 ```
-The above code snippet informs terraform to install and use AWS terraform provider version 5.16.1
+The above code snippet needs to be put into a `.tf` file in a project to inform terraform to install and use AWS terraform provider version 5.16.1
 
 2. **Resources:** Resources represent the infrastructure components you want to manage, such as virtual machines, databases, networks, etc. They are defined using a resource block in your configuration.
 Example: To create an AWS EC2 instance using terraform, we can write a resource block like this:
