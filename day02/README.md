@@ -51,7 +51,7 @@ variable "instance_type" {
 Let's break down the components of this variable block:
 
 - variable - This is the block type. It indicates that you are defining a variable.
-- "region" - This is the variable name. It's a user-defined identifier for this specific variable. You'll use this name to refer to the variable elsewhere in your configuration.
+- "instance_type" - This is the variable name. It's a user-defined identifier for this specific variable. You'll use this name to refer to the variable elsewhere in your configuration.
 - {} - This is the body of the variable block. It contains the configuration settings for this variable.
   - **description** - This is an optional parameter. It provides a description of what the variable is used for. It's helpful for providing context to other users (including yourself) who might work with this configuration in the future.
   - **type** - This parameter specifies the type of the variable. In this case, it's a string, meaning that this variable is expected to hold a string value.
