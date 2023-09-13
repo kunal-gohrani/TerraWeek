@@ -6,7 +6,6 @@ Hello everyone, In this blog, we are going to cover HashiCorp Configuration Lang
 2. Variables in HCL
 3. Terraform Commands
 4. Create a local file using resources and variables
-5. Using AWS provider to create an EC2 instance
 
 ## Block, Parameters, and Arguments
 In HCL (HashiCorp Configuration Language), a block is a fundamental structure used to define and configure **resources**, **data sources**, **providers**, and other elements within a configuration file. A block is identified by its type and is defined using **curly braces {}**. Let’s take a simple example of a block that defines an AWS EC2 instance:
@@ -67,7 +66,59 @@ resource "aws_instance" "terraform-demo-instance" {
 ```
 var.instance_type will refer to the value in the instance_type variable when applying these files.
 
+## Terraform Commands
+Before diving in to hands-on, it is important for us to learn about terraform commands and their uses:
+1. `terraform init`:
+    - This command is used to initialize your terraform folder with a new or existing terraform configuration and download necessary plugins and providers, as defined in the project
+2. `terraform plan`:
+    -  Creates an execution plan based on the configuration.
+    -  Shows the changes that will be made to the infrastructure.
+    -  Consider this as a dry run of the modifications that will be done to your infrastructure upon applying the Terraform files
+4. `terraform apply`:
+    - Applies the changes specified in the plan.
+    - Modifies or creates infrastructure resources as needed.
+5. `terraform destroy`:
+    - Destroys the resources defined in the configuration.
+    - Safely removes infrastructure components.
+6. `terraform validate`:
+    - Validates the configuration files for syntax and semantics.
+    - Checks for errors or issues before applying changes.
+
 ## Create a local file using resources and variables
 With the knowledge of resources and variables, let's try to write a terraform resource that will create a local file in your computer, let's get started!
 
-### Step 1: Create a new folder
+### Step 1: Create a new folder `terraform-localfile` to store our terraform files
+This folder will be used to store our terraform configuration files needed to create a file in our local machine.
+
+### Step 2: Create a `main.tf` file
+In this `main.tf` file, paste the below code:
+```
+resource "local_file" "diary" {
+    filename = "./diary.txt"
+    content = "This is my first day of maintaining a diary"
+}
+```
+This code will create a new file called `diary.txt` inside `terraform-localfile` folder with the contents as written in the content parameter
+
+### Step 3: Run terraform init
+Before running any terraform command in a new folder, it is always required to run `terraform init`, which will setup the folder and download necessary plugins.
+After running the command, you may notice that some new files/folders have been created like `.terraform` and `.terraform.lock.hcl`, inside `.terraform` folder, you will see that the `local` provider was downloaded.
+![image](https://github.com/kunal-gohrani/TerraWeek/assets/47574597/992f1fbd-dfd0-4ec9-9b8a-953cddc6b5a2)
+
+### Step 4: Run terraform plan
+`terraform plan` command will let you see what are the changes that will be made when you run `terraform apply`. Consider this command as a dry run of your Terraform files.
+![image](https://github.com/kunal-gohrani/TerraWeek/assets/47574597/34d25a7d-a5d8-42ae-9311-52638deb2c0f)
+
+
+### Step 5: Run terraform apply
+`terraform apply` will create the new file `diary.txt` with the contents as mentioned in the local_file resource block. It may prompt you for a confirmation, type "yes", and the file would be created like this:
+![image](https://github.com/kunal-gohrani/TerraWeek/assets/47574597/6ba26d87-dc4a-49c7-b4ce-c30c92d893e6)
+
+
+Congratulations on making it this far! I hope you've enjoyed delving into the fundamentals of Terraform and HashiCorp Configuration Language (HCL). In this blog, we've covered the essentials, from understanding HCL syntax to understanding crucial Terraform commands for managing infrastructure.
+
+To put theory into practice, we embarked on a hands-on journey. By creating a text file using the Terraform local_file resource, you gained firsthand experience in applying Terraform to real-world scenarios.
+
+With this foundational knowledge, you're well on your way to orchestrating infrastructure like a pro. Stay tuned for more exciting adventures in the world of Terraform and beyond!
+
+Keep following for more exciting blogs! Till then, happy learning!
