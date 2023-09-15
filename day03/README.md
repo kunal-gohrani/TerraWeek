@@ -75,7 +75,7 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 ```
-**NOTE:** Allowing SSH Access from anywhere is a potential security risk, please destroy the resources that have been created in this project using `terraform destroy`
+**NOTE:** Allowing SSH Access from anywhere is a potential security risk, please destroy the resources that have been created in this project using `terraform destroy` after you have finished the hands on.
 
 2. Create an `aws_instance` resource which creates the EC2 in AWS, this resource will be tied to the security group and the key pair we created earlier. We will also use an `output` block to print the public IP address of the instance after it's been deployed using `terraform apply`
 ```terraform
