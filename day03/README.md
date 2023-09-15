@@ -130,3 +130,71 @@ Now, imagine a scenario where the state files are inadvertently deleted. This ac
 You can view the contents of `terraform.tfstate` file anytime but make sure to never change the contents of it manually.
 
 # Provisioners in Terraform
+Provisioners in Terraform serve as the finishing touch to your infrastructure. They help customize instances after they've been created. This can involve tasks like installing software, configuring settings, or running scripts during creation or destruction phase. While provisioners can be handy, it's worth noting that they should be used sparingly, as they can make your configurations less predictable and harder to maintain.
+
+## Types of Provisioners in Terraform
+There are two types of provisioners:
+1. Generic Provisioners: These are generally vendor-independent and can be used with any cloud vendor. E.g.: **file, local-exec, and remote-exec**
+2. Vendor Provisioners: It can only be used only with its vendor. Eg: the chef provisioner can only be used with the chef for automating and provisioning the server configuration.
+For the purpose of this blog, we will be seeing how to use a `local-exec` provisioner to run commands on our local machine upon creation and destruction of the AWS instance.
+
+### local-exec provisioner
+A `local-exec` provisioner is used to run commands on the machine that deploys terraform resources using `terraform apply`. Let's now use this provisioner in our aws_instance resource to print the instance's public IP after it has been created. Replace the aws_instance resource with the code below to add `local-exec` provisioner
+```terraform
+resource "aws_instance" "terraform-instance" {
+    ami = "ami-0f5ee92e2d63afc18"
+    instance_type = "t2.micro"
+    associate_public_ip_address = true
+    key_name = var.keypair
+    vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+
+    tags = {
+        Name = "terraform-instance"
+    }
+
+    provisioner "local-exec" {
+        command = "echo \"The Server's IP Address is ${self.public_ip}\""
+    }
+    
+    provisioner "local-exec" {
+        when = destroy
+        command = "echo \"Server ${self.public_ip} has been destroyed\""
+      
+    }
+}
+```
+Make sure to run `terraform destroy` to destroy the previously created resources. Then run `terraform apply` to create a new resource which includes the provisioners. 
+
+**Output of Terraform Apply:**
+![image](https://github.com/kunal-gohrani/TerraWeek/assets/47574597/46f3066a-6248-4d9d-93c3-07219b298a27)
+
+**Output of Terraform Destroy:**
+Now run `terraform destroy` to see the destroy local-exec provisioner running.
+![image](https://github.com/kunal-gohrani/TerraWeek/assets/47574597/1ef8717a-9b10-4f1b-9332-feb844e6c4ba)
+
+# Lifecycle Management in Terraform
+Terraform allows you to manage the lifecycle of resources using the lifecycle block. This block can be used to configure how Terraform should handle resource creation, updates, and destruction.
+
+1. **create_before_destroy:** This setting controls whether to create a new resource before destroying the old one during an update. By default, Terraform destroys the old resource first and then creates the new one. Enabling this setting allows for zero-downtime replacements.
+
+2. **prevent_destroy:** Setting prevent_destroy to true prevents a resource from being destroyed. This can be useful to protect critical resources from accidental deletion.
+
+3. **ignore_changes:** ignore_changes allows you to specify resource attributes that Terraform should ignore when determining if a resource needs to be replaced. This can be helpful when certain attributes are managed outside of Terraform.
+
+Here’s an example of using the lifecycle block to prevent the accidental destruction of an AWS EC2 instance:
+```terraform
+resource "aws instance" "my-instance" {
+  ami = "ami-0c94855ba95b798c7"
+  instance_type = "+2.micro"
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+```
+**NOTE:** Adding `prevent_destroy` in a terraform resource will not allow terraform to destroy the resource when `terraform destroy` is used. Be careful when setting lifecycle configuration in Terraform.
+
+# Conclusion
+Congratulations on completing this step-by-step guide to creating an EC2 instance with SSH access and keypair using Terraform! You've not only gained hands-on experience in provisioning cloud resources but also delved into crucial Terraform concepts like provisioners and lifecycle management.
+Stay tuned for more exciting adventures in the realm of Terraform and cloud provisioning. Happy coding!
+
+Contact me on LinkedIn: [Kunal Gohrani](www.linkedin.com/in/kunal-gohrani)
