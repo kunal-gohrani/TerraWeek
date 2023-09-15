@@ -111,8 +111,6 @@ This will deploy the resources to your AWS Account and output the public IP of t
 
 Congratulations! We have successfully created an EC2 instance with SSH Access!
 
-# Terraform State Files
-
 ## Step 11: Validate SSH Access
 Remember the .pem file that we downloaded from AWS earlier? Go to the folder it was downloaded in and run these commands
 `chmod 400 <.PEM FILE>` and `ssh -i <.PEM FILE> ubuntu@<PUBLIC-IP>`. Make sure to replace <.PEM FILE> with the name of the pem file downloaded, and <PUBLIC-IP> with the public IP of the instance that we deployed.
