@@ -117,3 +117,16 @@ Congratulations! We have successfully created an EC2 instance with SSH Access!
 Remember the .pem file that we downloaded from AWS earlier? Go to the folder it was downloaded in and run these commands
 `chmod 400 <.PEM FILE>` and `ssh -i <.PEM FILE> ubuntu@<PUBLIC-IP>`. Make sure to replace <.PEM FILE> with the name of the pem file downloaded, and <PUBLIC-IP> with the public IP of the instance that we deployed.
 ![image](https://github.com/kunal-gohrani/TerraWeek/assets/47574597/0e96132e-175a-4510-a170-f06cb631cbb1)
+
+Congratulations on successfully deploying the EC2 instance with SSH Access allowed!
+
+# Terraform State File
+Every terraform project you create and apply will create a file by the name of `teraform.tfstate`, This file is known as **terraform state file**.
+
+Think of Terraform state files like a detailed blueprint of your infrastructure. They keep track of every little detail - from what resources are there to how they're connected. This is super important because Terraform uses this info to make sure everything is in the right place.
+
+Now, imagine a scenario where the state files are inadvertently deleted. This action can have serious consequences. Without the state files, Terraform loses track of the existing resources and their configurations. It's similar to erasing the blueprint of a building while construction is still underway. Any further operations on the infrastructure become highly risky, as Terraform won't have a reliable reference point to understand the current state. This underscores the critical importance of safeguarding and managing your Terraform state files diligently.
+
+You can view the contents of `terraform.tfstate` file anytime but make sure to never change the contents of it manually.
+
+# Provisioners in Terraform
